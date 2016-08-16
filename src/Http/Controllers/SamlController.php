@@ -64,8 +64,7 @@ class SamlController extends Controller
     public function logout(Request $request, OneLogin_Saml2_Auth $samlProvider)
     {
         // todo document these parameters
-        // todo allow returnTo to be overriden in config
-        $returnTo = $request->query('returnTo', route('/'));
+        $returnTo = $request->query('returnTo', route(config('saml.logoutRoute')));
         $sessionIndex = $request->query('sessionIndex', $samlProvider->getSessionIndex());
         $nameId = $request->query('nameId', $samlProvider->getNameId());
 
