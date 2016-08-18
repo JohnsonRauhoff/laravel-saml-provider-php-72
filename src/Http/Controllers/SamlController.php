@@ -56,7 +56,7 @@ class SamlController extends Controller
 
         // todo handle errors
 
-        return redirect('saml.logout');
+        return redirect(route(config('saml.logoutRoute')));
     }
 
     public function logout(Request $request, OneLogin_Saml2_Auth $samlProvider)
