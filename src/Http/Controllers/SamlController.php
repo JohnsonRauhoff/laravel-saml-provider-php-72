@@ -38,7 +38,7 @@ class SamlController extends Controller
             return redirect($redirectUrl);
         }
 
-        return redirect(route(config('saml.loginRoute')));
+        return redirect(route(config('saml.defaultIntendedRoute')));
     }
 
     public function sls(Saml $saml, OneLogin_Saml2_Auth $samlProvider)
@@ -72,9 +72,11 @@ class SamlController extends Controller
         return null;
     }
 
-    public function login(OneLogin_Saml2_Auth $samlProvider)
+    public function login(Request $request, OneLogin_Saml2_Auth $samlProvider)
     {
-        $samlProvider->login(route(config('saml.loginRoute')));
+        $intendedUrl = $request->get('intended-url', url(route(config('saml.defaultIntendedRoute'))));
+
+        $samlProvider->login($intendedUrl);
     }
 
 }

@@ -15,14 +15,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Login Route
+    | Default Intended Route
     |--------------------------------------------------------------------------
     |
     | Specify the route name where user will be redirected after successful authentication
     |
+    | You may also specify an optional 'intended-url' parameter when redirecting to SAML. If 'intended-url'
+    | is specified, this configuration option will not be used.
+    |
+    | Example:
+    |
+    |    redirect(route('saml.login', ['intended-url', $intendedUrl]));
+    |
     */
 
-    'loginRoute' => '/',
+    'defaultIntendedRoute' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -92,7 +99,7 @@ return [
     | They're copied from OneLogin's configuration example
     |
     | TODO: Removed included comments due to poor English, rewrite based on source
-    |
+    | TODO: Move strict and debug to package-level configuration
     */
 
     'onelogin_configuration' => [
