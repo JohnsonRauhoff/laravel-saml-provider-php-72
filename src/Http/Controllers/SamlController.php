@@ -3,6 +3,7 @@
 use CharlesRumley\Saml\Events\SamlLoginEvent;
 use CharlesRumley\Saml\Events\SamlLogoutEvent;
 use CharlesRumley\Saml\Saml;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use OneLogin_Saml2_Auth;
@@ -20,16 +21,12 @@ class SamlController extends Controller
     public function acs(Saml $saml, OneLogin_Saml2_Auth $samlProvider)
     {
         $samlProvider->processResponse();
-        $errors = $samlProvider->getErrors();
 
-        if (!empty($errors)) {
-            return $errors;
-        }
+        $this->assertSuccessState($samlProvider);
+
         if (!$samlProvider->isAuthenticated()) {
             return array('error' => 'Could not authenticate');
         }
-
-        // todo handle errors
 
         event(new SamlLoginEvent($saml->user()));
 
@@ -39,6 +36,23 @@ class SamlController extends Controller
         }
 
         return redirect(route(config('saml.defaultIntendedRoute')));
+    }
+
+    /**
+     * Ensure the current state of the given OneLogin SAML provider is successful, throw
+     * an exception if the provider is in a failure state.
+     */
+    private function assertSuccessState(OneLogin_Saml2_Auth $samlProvider)
+    {
+        $firstError = @$samlProvider->getErrors()[0];
+        $lastErrorReason = $samlProvider->getLastErrorReason();
+
+        if (!empty($firstError)) {
+            // TODO: This exception doesn't read well
+            throw new Exception(
+                "Asserting SAML provider in successful state failed. An '${firstError}' error with reason '$lastErrorReason' was found"
+            );
+        }
     }
 
     public function sls(Saml $saml, OneLogin_Saml2_Auth $samlProvider)
@@ -52,9 +66,7 @@ class SamlController extends Controller
             }
         );
 
-        $errors = $samlProvider->getErrors();
-
-        // todo handle errors
+        $this->assertSuccessState($samlProvider);
 
         return redirect(route(config('saml.logoutRoute')));
     }
