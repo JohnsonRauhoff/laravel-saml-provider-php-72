@@ -1,12 +1,12 @@
 <?php namespace CharlesRumley\Saml;
 
-use OneLogin_Saml2_Auth;
+use OneLogin\Saml2\Auth;
 
 class User
 {
     protected $samlProvider;
 
-    function __construct(OneLogin_Saml2_Auth $samlProvider)
+    function __construct(Auth $samlProvider)
     {
         $this->samlProvider = $samlProvider;
     }

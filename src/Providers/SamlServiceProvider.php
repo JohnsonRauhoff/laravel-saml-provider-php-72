@@ -4,7 +4,7 @@ use CharlesRumley\Saml\Console\Commands\GenerateIdentityProviderSettingsFromMeta
 use CharlesRumley\Saml\Console\Commands\GenerateServiceProviderMetadata;
 use CharlesRumley\Saml\Saml;
 use Illuminate\Support\ServiceProvider;
-use OneLogin_Saml2_Auth;
+use OneLogin\Saml2\Auth;
 
 class SamlServiceProvider extends ServiceProvider
 {
@@ -44,21 +44,21 @@ class SamlServiceProvider extends ServiceProvider
         $this->commands($this->commands);
 
         $this->app->singleton(
-            OneLogin_Saml2_Auth::class,
+            Auth::class,
             function ($app) {
                 $config = config('saml.onelogin_configuration');
                 $config['sp']['entityId'] = $config['sp']['entityId'] ?: url('/', [], true);
                 $config['sp']['assertionConsumerService']['url'] = url(route('saml.acs', [], false), [], true);
                 $config['sp']['singleLogoutService']['url'] = url(route('saml.sls', [], false), [], true);
 
-                return new OneLogin_Saml2_Auth($config);
+                return new Auth($config);
             }
         );
 
         $this->app->singleton(
             Saml::class,
             function ($app) {
-                return new Saml($app->make(OneLogin_Saml2_Auth::class));
+                return new Saml($app->make(Auth::class));
             }
         );
     }

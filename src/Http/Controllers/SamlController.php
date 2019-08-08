@@ -6,7 +6,7 @@ use CharlesRumley\Saml\Saml;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use OneLogin_Saml2_Auth;
+use OneLogin\Saml2\Auth;
 
 class SamlController extends Controller
 {
@@ -18,7 +18,7 @@ class SamlController extends Controller
         return response($metadata, 200, ['Content-Type' => 'text/xml']);
     }
 
-    public function acs(Saml $saml, OneLogin_Saml2_Auth $samlProvider)
+    public function acs(Saml $saml, Auth $samlProvider)
     {
         $samlProvider->processResponse();
 
@@ -42,7 +42,7 @@ class SamlController extends Controller
      * Ensure the current state of the given OneLogin SAML provider is successful, throw
      * an exception if the provider is in a failure state.
      */
-    private function assertSuccessState(OneLogin_Saml2_Auth $samlProvider)
+    private function assertSuccessState(Auth $samlProvider)
     {
         $firstError = @$samlProvider->getErrors()[0];
         $lastErrorReason = $samlProvider->getLastErrorReason();
@@ -55,7 +55,7 @@ class SamlController extends Controller
         }
     }
 
-    public function sls(Saml $saml, OneLogin_Saml2_Auth $samlProvider)
+    public function sls(Saml $saml, Auth $samlProvider)
     {
         $samlProvider->processSLO(
             false,
@@ -71,7 +71,7 @@ class SamlController extends Controller
         return redirect(route(config('saml.logoutRoute')));
     }
 
-    public function logout(Request $request, OneLogin_Saml2_Auth $samlProvider)
+    public function logout(Request $request, Auth $samlProvider)
     {
         // todo document these parameters
         $returnTo = $request->query('returnTo', route(config('saml.logoutRoute')));
@@ -84,7 +84,7 @@ class SamlController extends Controller
         return null;
     }
 
-    public function login(Request $request, OneLogin_Saml2_Auth $samlProvider)
+    public function login(Request $request, Auth $samlProvider)
     {
         $intendedUrl = $request->get('intended-url', url(route(config('saml.defaultIntendedRoute'))));
 

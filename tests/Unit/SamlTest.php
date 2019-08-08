@@ -1,6 +1,7 @@
 <?php namespace Tests\Unit;
 
 use CharlesRumley\SamlProvider\Saml;
+use OneLogin\Saml2\Auth;
 use Tests\UnitTest;
 
 class SamlTest extends UnitTest
@@ -11,7 +12,7 @@ class SamlTest extends UnitTest
      */
     public function testItMayBeConstructedWithOneLogin()
     {
-        $onelogin = new \OneLogin_Saml2_Auth();
+        $onelogin = new Auth();
         $this->assertInstanceOf(Saml::class, new Saml());
     }
 
