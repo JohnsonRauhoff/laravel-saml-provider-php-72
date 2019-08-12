@@ -5,6 +5,7 @@ use CharlesRumley\Saml\Console\Commands\GenerateServiceProviderMetadata;
 use CharlesRumley\Saml\Saml;
 use Illuminate\Support\ServiceProvider;
 use OneLogin\Saml2\Auth;
+use OneLogin\Saml2\Utils;
 
 class SamlServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class SamlServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/saml.php' => config_path('saml.php'),
             ]
         );
+
+        if (config('saml.proxyVars', false)) {
+            Utils::setProxyVars(true);
+        }
     }
 
     /**

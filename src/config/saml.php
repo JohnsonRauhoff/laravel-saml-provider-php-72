@@ -92,6 +92,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Proxy Variables
+    |--------------------------------------------------------------------------
+    |
+    | If your application is running behind a load balancer or other proxy, or you've
+    | offloaded your SSL responsibility in some other fashion, and you're seeing a
+    | mismatch between http and https in the saml response, consider toggling on these
+    | proxy variables
+    |
+    | Default: false
+    |
+    */
+
+    'proxyVars' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | OneLogin Configuration
     |--------------------------------------------------------------------------
     |
