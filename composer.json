@@ -1,12 +1,11 @@
 {
-  "name": "charles-rumley/laravel-saml-provider",
+  "name": "johnsonrauhoff/laravel-saml-provider",
   "description": "",
   "keywords": [],
-  "version": "0.0.72",
   "authors": [
     {
-      "name": "charles-rumley",
-      "email": "charles.rumley@gmail.com"
+      "name": "JohnsonRauhoff",
+      "email": "digital@johnsonrauhoff.com"
     }
   ],
   "require": {
